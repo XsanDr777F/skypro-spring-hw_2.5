@@ -1,7 +1,11 @@
 package prosky.skyprospringhw25.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 import java.util.Random;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class Employee {
     private String fullName;
@@ -10,7 +14,7 @@ public class Employee {
     private final Random random = new Random();
 
     public Employee(String fullName) {
-        this.fullName = fullName;
+        this.fullName = capitalize(fullName.toLowerCase());
         this.sallary = random.nextInt(10000) + 1000;
         this.depId = random.nextInt(5) + 1;
     }

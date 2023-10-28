@@ -1,11 +1,15 @@
 package prosky.skyprospringhw25.servise;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import prosky.skyprospringhw25.exception.EmployeeAlreadyAddedException;
 import prosky.skyprospringhw25.exception.EmployeeNotFounfException;
+import prosky.skyprospringhw25.exception.InvalideInputException;
 import prosky.skyprospringhw25.model.Employee;
 
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -13,6 +17,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee add(String fullname) {
+        if (!validateInput(fullname)) {
+            throw new InvalideInputException();
+        }
         Employee employee = new Employee(fullname);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
@@ -23,6 +30,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee remove(String fullname) {
+        if (!validateInput(fullname)) {
+            throw new InvalideInputException();
+        }
         Employee employee = new Employee(fullname);
 
         if (!employees.containsKey(employee.getFullName())) {
@@ -34,6 +44,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee find(String fullname) {
+        if (!validateInput(fullname)) {
+            throw new InvalideInputException();
+        }
         Employee employee = new Employee(fullname);
 
         if (!employees.containsKey(employee.getFullName())) {
@@ -46,6 +59,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Collection<Employee> findAll() {
         return employees.values();
+    }
+
+    private boolean validateInput(String fullName) {
+        return isAlpha(fullName);
     }
 }
 
