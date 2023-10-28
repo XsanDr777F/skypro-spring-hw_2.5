@@ -5,21 +5,19 @@ import prosky.skyprospringhw25.exception.EmployeeAlreadyAddedException;
 import prosky.skyprospringhw25.exception.EmployeeNotFounfException;
 import prosky.skyprospringhw25.model.Employee;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employees = new ArrayList<>();
+    private final Map<String, Employee> employees = new HashMap<>();
 
     @Override
     public Employee add(String fullname) {
         Employee employee = new Employee(fullname);
-        if (employees.contains(employee)) {
+        if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employees.add(employee);
+        employees.put(employee.getFullName(), employee);
         return employee;
     }
 
@@ -27,10 +25,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee remove(String fullname) {
         Employee employee = new Employee(fullname);
 
-        if (!employees.contains(employee)) {
+        if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFounfException();
         }
-        employees.remove(employee);
+        employees.remove(employee.getFullName());
         return employee;
     }
 
@@ -38,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee find(String fullname) {
         Employee employee = new Employee(fullname);
 
-        if (!employees.contains(employee)) {
+        if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFounfException();
 
         }
@@ -47,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<Employee> findAll() {
-        return employees;
+        return employees.values();
     }
 }
 
